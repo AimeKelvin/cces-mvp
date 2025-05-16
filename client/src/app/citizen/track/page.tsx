@@ -4,7 +4,7 @@ import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { BadgeCheck, Hourglass, XCircle } from "lucide-react";
-import Navbar from "@/components/ui/Navbar";
+import Navbar from "@/components/customs/citizen/Navbar";
 import Footer from "@/components/ui/Footer";
 
 const mockComplaint = {

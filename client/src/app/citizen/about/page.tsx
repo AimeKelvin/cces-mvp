@@ -1,6 +1,6 @@
 "use client";
 
-import Navbar from "@/components/ui/Navbar";
+import Navbar from "@/components/customs/citizen/Navbar";
 import Footer from "@/components/ui/Footer";
 export default function AboutPage() {
   return (

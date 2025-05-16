@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { MapPin, UploadCloud } from "lucide-react";
-import Navbar from "@/components/ui/Navbar";
+import Navbar from "@/components/customs/citizen/Navbar";
 import Footer from "@/components/ui/Footer";
 export default function ReportIssuePage() {
   const [formData, setFormData] = useState({
