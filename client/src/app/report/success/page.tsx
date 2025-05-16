@@ -4,6 +4,7 @@ import { CheckCircle, Copy, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { useState } from "react";
+import Footer from "@/components/ui/Footer";
 
 export default function ReportSuccessPage() {
   const ticketId = "TKT-164568";
@@ -20,6 +21,7 @@ export default function ReportSuccessPage() {
   };
 
   return (
+    <>
     <section className="flex items-center justify-center min-h-screen bg-gray-50 px-4">
       <div className="bg-white p-8 sm:p-10 rounded-xl shadow-md w-full max-w-xl text-center border">
         <h1 className="text-2xl sm:text-3xl font-bold text-gray-800 mb-6">
@@ -72,6 +74,8 @@ export default function ReportSuccessPage() {
         </div>
       </div>
     </section>
+    <Footer />
+    </>
   );
 }
 ``
