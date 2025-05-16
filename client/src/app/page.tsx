@@ -1,10 +1,11 @@
-import { Hero1 } from "@/components/ui/hero";
-import Image from "next/image";
+import Hero from "@/components/ui/hero";
+import Navbar from "@/components/ui/Navbar";
 
 export default function Home() {
   return (
     <div>
-     <Hero1/>
+      <Navbar/>
+     <Hero/>
     </div>
   );
 }

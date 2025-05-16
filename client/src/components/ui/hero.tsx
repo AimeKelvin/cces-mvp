@@ -1,30 +1,43 @@
-import { MoveRight, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
+import Image from "next/image";
 
-function Hero1() {
+export default function Hero() {
   return (
-    <div className="w-full bg-white">
-      <div className="container mx-auto px-4 py-20 md:py-32">
-        <div className="flex flex-col items-center text-center gap-6">
-          <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight max-w-2xl text-gray-900">
-            Report Issues. Improve Your Community.
+    <div className="relative w-full min-h-[600px] flex items-center">
+      {/* Background Image */}
+      <div className="absolute inset-0 -z-10">
+        <Image
+          src="/images/com.png"
+          alt="Community issue reporting background"
+          fill
+          sizes="100vw"
+          className="object-cover"
+        />
+        <div className="absolute inset-0 bg-black/65" />
+      </div>
+
+      <div className="relative w-full max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 md:py-20 lg:py-24">
+        <div className="text-center lg:text-left">
+          <h1 className="text-4xl sm:text-5xl font-bold tracking-tight text-white">
+            <span className="block">Report Issues, Build Community</span>
           </h1>
-          <p className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-md">
-            Report public complaints in seconds and stay updated as they’re resolved.
+          <p className="mt-3 text-base text-white/90 sm:mt-5 sm:text-lg md:text-xl sm:max-w-xl sm:mx-auto lg:mx-0">
+            Report public issues quickly and track their progress in real-time. Help us create safer, cleaner, and more responsive neighborhoods.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 mt-6 w-full sm:justify-center">
+          <div className="mt-5 sm:mt-8 flex flex-col sm:flex-row sm:justify-center lg:justify-start gap-4">
             <Button
-              size="lg"
-              className="w-full sm:w-auto gap-2 bg-green-700 hover:bg-green-800 text-white"
+              asChild
+              className="w-full sm:w-auto px-8 py-3 text-base font-medium rounded-md text-white bg-green-600 hover:bg-green-700"
             >
-              Report Issue <MoveRight className="w-4 h-4" />
+              <Link href="/report">Report Issue</Link>
             </Button>
             <Button
-              size="lg"
+              asChild
               variant="outline"
-              className="w-full sm:w-auto gap-2 border-green-700 text-green-700 hover:bg-green-50"
+              className="w-full sm:w-auto px-8 py-3 text-base font-medium rounded-md text-white bg-transparent border border-white hover:bg-white/10"
             >
-              Track Complaint 
+              <Link href="/track">Track Progress</Link>
             </Button>
           </div>
         </div>
@@ -32,5 +45,3 @@ function Hero1() {
     </div>
   );
 }
-
-export { Hero1 };
