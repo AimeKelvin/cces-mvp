@@ -16,7 +16,6 @@ const mockComplaint = {
   organization: "Kigali City Infrastructure Department",
   citizen: {
     name: "John Doe",
-    email: "john@example.com",
   }
 };
 
@@ -60,7 +59,7 @@ export default function TrackPage() {
             onChange={(e) => setTicketId(e.target.value)}
             className="w-full sm:max-w-md"
           />
-          <Button onClick={handleTrack}>Track</Button>
+          <Button onClick={handleTrack} className="bg-green-600 text-white border border-gray-500">Track</Button>
         </div>
 
         {complaint && (

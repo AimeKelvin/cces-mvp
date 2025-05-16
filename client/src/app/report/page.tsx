@@ -5,14 +5,17 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import { Camera, MapPin, UploadCloud } from "lucide-react";
-
+import { MapPin, UploadCloud } from "lucide-react";
+import Navbar from "@/components/ui/Navbar";
 export default function ReportIssuePage() {
   const [formData, setFormData] = useState({
     title: "",
     description: "",
     location: "",
     image: null as File | null,
+    fullName: "",
+    phone: "",
+    email: "",
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -27,21 +30,72 @@ export default function ReportIssuePage() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // TODO: Handle form submission (API integration)
     console.log("Form Data:", formData);
+    // TODO: Submit to backend
   };
 
   return (
-    <section className="max-w-3xl mx-auto px-4 sm:px-6 md:px-8 py-12">
+    <>
+    <Navbar/>
+    <section className="max-w-3xl mx-auto px-4 sm:px-6 py-12">
       <h1 className="text-3xl md:text-4xl font-bold text-green-700 mb-6 text-center">
         Report a Public Issue
       </h1>
       <p className="text-gray-600 text-center mb-10">
-        Fill out the form below to report any public issue you’ve observed.
-        Our team will review and respond as soon as possible.
+        Fill out the form below to report any public issue you’ve observed. We’ll follow up as soon as possible.
       </p>
 
-      <form onSubmit={handleSubmit} className="bg-white shadow-md rounded-xl p-6 space-y-6 border">
+      <form onSubmit={handleSubmit} className="bg-white shadow-md rounded-xl p-6 space-y-6 border border-gray-400">
+        {/* Full Name */}
+        <div>
+          <Label htmlFor="fullName" className="text-sm font-medium text-gray-700">
+            Full Name
+          </Label>
+          <Input
+            id="fullName"
+            name="fullName"
+            type="text"
+            placeholder="e.g., Jane Doe"
+            value={formData.fullName}
+            onChange={handleChange}
+            required
+            className="mt-2 border-gray-500"
+          />
+        </div>
+
+        {/* Phone & Email */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <Label htmlFor="phone" className="text-sm font-medium text-gray-700">
+              Phone Number
+            </Label>
+            <Input
+              id="phone"
+              name="phone"
+              type="tel"
+              placeholder="e.g., +250 780 000 000"
+              value={formData.phone}
+              onChange={handleChange}
+              required
+              className="mt-2 border-gray-500"
+            />
+          </div>
+          <div>
+            <Label htmlFor="email" className="text-sm font-medium text-gray-700">
+              Email (optional)
+            </Label>
+            <Input
+              id="email"
+              name="email"
+              type="email"
+              placeholder="e.g., you@example.com"
+              value={formData.email}
+              onChange={handleChange}
+              className="mt-2 border-gray-500" 
+            />
+          </div>
+        </div>
+
         {/* Title */}
         <div>
           <Label htmlFor="title" className="text-sm font-medium text-gray-700">
@@ -55,7 +109,7 @@ export default function ReportIssuePage() {
             value={formData.title}
             onChange={handleChange}
             required
-            className="mt-2"
+            className="mt-2 border-gray-500"
           />
         </div>
 
@@ -72,7 +126,7 @@ export default function ReportIssuePage() {
             value={formData.description}
             onChange={handleChange}
             required
-            className="mt-2"
+            className="mt-2 border-gray-500"
           />
         </div>
 
@@ -90,7 +144,7 @@ export default function ReportIssuePage() {
               value={formData.location}
               onChange={handleChange}
               required
-              className="pl-10"
+              className="pl-10 border-gray-500"
             />
             <MapPin className="absolute left-3 top-3 w-5 h-5 text-gray-400" />
           </div>
@@ -134,5 +188,6 @@ export default function ReportIssuePage() {
         </div>
       </form>
     </section>
+    </>
   );
 }
