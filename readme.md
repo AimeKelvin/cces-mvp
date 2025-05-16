@@ -1,6 +1,6 @@
-# Jabo — Citizen Complaints and Engagement System
+# Jambo — Citizen Complaints and Engagement System
 
-CitizenLink is a minimal yet powerful MVP built for the Hackathon challenge to address the problem of fragmented citizen complaints handling. This system enables citizens to easily submit feedback or complaints, and allows government agencies to respond, track, and manage these issues effectively.
+Jambo is a minimal yet powerful MVP built for the Hackathon challenge to address the problem of fragmented citizen complaints handling. This system enables citizens to easily submit feedback or complaints, and allows government agencies to respond, track, and manage these issues effectively.
 
 ## 🚀 Features
 
@@ -32,5 +32,4 @@ CitizenLink is a minimal yet powerful MVP built for the Hackathon challenge to a
 - Clear and simple workflows (from submission to resolution)
 - Extensible architecture for future upgrades (AI, analytics, notifications)
 
-## 📁 Folder Structure (Frontend)
 
