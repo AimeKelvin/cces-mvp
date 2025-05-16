@@ -1,6 +1,6 @@
-# Jambo — Citizen Complaints and Engagement System
+# Jabo — Citizen Complaints and Engagement System
 
-Jambo is a minimal yet powerful MVP built for the Hackathon challenge to address the problem of fragmented citizen complaints handling. This system enables citizens to easily submit feedback or complaints, and allows government agencies to respond, track, and manage these issues effectively.
+Jabo is a minimal yet powerful MVP built for the Hackathon challenge to address the problem of fragmented citizen complaints handling. This system enables citizens to easily submit feedback or complaints, and allows government agencies to respond, track, and manage these issues effectively.
 
 ## 🚀 Features
 
