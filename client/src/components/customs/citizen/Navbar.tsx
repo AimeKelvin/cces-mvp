@@ -11,7 +11,7 @@ const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const navLinks = [
-    { name: "Home", path: "/citizen" },
+    { name: "Home", path: "/" },
     { name: "Report Issue", path: "/report" },
     { name: "Track Complaint", path: "/track" },
     { name: "About", path: "/about" },

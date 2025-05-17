@@ -1,46 +1,38 @@
-"use client";
+import { AppSidebar } from "@/components/app-sidebar"
+import { ChartAreaInteractive } from "@/components/chart-area-interactive"
+import { DataTable } from "@/components/data-table"
+import { SectionCards } from "@/components/section-cards"
+import { SiteHeader } from "@/components/site-header"
+import {
+  SidebarInset,
+  SidebarProvider,
+} from "@/components/ui/sidebar"
 
-import { useEffect, useState } from "react";
-import PendingApproval from "@/components/customs/gov/PendingApproval";
-import { mockUsers } from "@/lib/mockUsers"; // Import mock data
+import data from "./data.json"
 
-type User = {
-  name: string;
-  email: string;
-  approved: boolean;
-  role?: string;
-  category?: string;
-};
-
-export default function OrgDashboard() {
-  const [user, setUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchUser = async () => {
-      // Simulate a delay to mimic real fetching
-      await new Promise((res) => setTimeout(res, 500));
-
-      // Simulate logged-in user (choose by index or logic)
-      const simulatedUser = mockUsers[1]; // Example: Ministry of Finance (unapproved)
-      setUser(simulatedUser);
-      setLoading(false);
-    };
-
-    fetchUser();
-  }, []);
-
-  if (loading) return <div className="p-8 text-center">Loading...</div>;
-
-  if (user && !user.approved) return <PendingApproval />;
-
+export default function Page() {
   return (
-    <div className="p-8">
-      <h1 className="text-3xl font-bold mb-4">Welcome to Your Dashboard</h1>
-      <p className="text-gray-700">Organization: {user?.name}</p>
-      <p className="text-gray-700">Email: {user?.email}</p>
-      <p className="text-gray-700">Category: {user?.category}</p>
-      <p className="text-gray-700">Role: {user?.role}</p>
-    </div>
-  );
+    <SidebarProvider
+      style={
+        {
+          "--sidebar-width": "calc(var(--spacing) * 72)",
+          "--header-height": "calc(var(--spacing) * 12)",
+        } as React.CSSProperties
+      }
+    >
+      <AppSidebar variant="inset" />
+      <SidebarInset>
+        <SiteHeader />
+        <div className="flex flex-1 flex-col">
+          <div className="@container/main flex flex-1 flex-col gap-2">
+            <div className="flex flex-col gap-4 py-4 md:gap-6 md:py-6">
+              <SectionCards />
+              
+              <DataTable data={data} />
+            </div>
+          </div>
+        </div>
+      </SidebarInset>
+    </SidebarProvider>
+  )
 }

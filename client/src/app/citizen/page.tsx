@@ -6,12 +6,12 @@ import Footer from "@/components/ui/Footer";
 
 export default function Home() {
   return (
-    <div>
+    <>
     <Navbar />
     <Hero />
     <Stats />
     <HowItWorks />
     <Footer />
-    </div>
+    </>
   );
 }
