@@ -8,9 +8,24 @@ import Navbar from "@/components/customs/citizen/Navbar";
 import Footer from "@/components/ui/Footer";
 import { complaints } from "@/lib/data";
 
+type Complaint = {
+  id: string;
+  name: string;
+  email: string;
+  category: string;
+  phone: string;
+  address: string;
+  message: string;
+  submittedAt: string;
+  location: string;
+  image: string;
+  status: string;
+  response: string | null;
+};
+
 export default function TrackPage() {
   const [ticketId, setTicketId] = useState("");
-  const [complaint, setComplaint] = useState<any | null>(null);
+  const [complaint, setComplaint] = useState<Complaint | null>(null);
 
   const handleTrack = () => {
     const foundComplaint = complaints.find((c) => c.id === ticketId);
@@ -127,6 +142,14 @@ export default function TrackPage() {
                   >
                     View Image
                   </a>
+                </div>
+              )}
+              {complaint.response && (
+                <div className="sm:col-span-2">
+                  <p className="text-gray-500 font-medium">Official Response</p>
+                  <div className="mt-1 p-4 bg-gray-50 border border-gray-200 rounded-lg text-gray-700">
+                    {complaint.response}
+                  </div>
                 </div>
               )}
             </div>

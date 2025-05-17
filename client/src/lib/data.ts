@@ -12,5 +12,19 @@ export const complaints = [
     image: "https://example.com/image1.jpg",
     status: "Pending",
     response: null,
+  },
+  {
+    id: "TKT-164569",
+    name: "Jane Smith",
+    email: "jane@example.com",
+    category: "Public Utilities",
+    phone: "+250 788 987 654",
+    address: "Gasabo, Kigali, Rwanda",
+    message: "Water outage in our neighborhood for two days.",
+    submittedAt: "2025-05-15",
+    location: "Gasabo, Kigali, Rwanda",
+    image: "https://example.com/image2.jpg",
+    status: "Resolved",
+    response: "The water outage was due to a burst pipe, which has been repaired. Water supply was restored on 2025-05-16. Please contact us if issues persist.",
   }
 ];
