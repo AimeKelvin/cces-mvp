@@ -89,7 +89,7 @@ git clone <repo-url>
 cd citizen-engagement-system
 npm install
 cp .env.example .env
-# Fill in MONGO_URI, JWT_SECRET, GEMINI_API_KEY in .env
+# Fill in MONGO_URI, JWT_SECRET in .env
 npm run dev
 ```
 
