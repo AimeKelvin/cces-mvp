@@ -30,14 +30,14 @@ export default function Hero() {
               asChild
               className="w-full sm:w-auto px-8 py-3 text-base font-medium rounded-md text-white bg-green-600 hover:bg-green-700"
             >
-              <Link href="/report">Report Issue</Link>
+              <Link href="/citizen/report">Report Issue</Link>
             </Button>
             <Button
               asChild
               variant="outline"
               className="w-full sm:w-auto px-8 py-3 text-base font-medium rounded-md text-white bg-transparent border border-white hover:bg-white/10"
             >
-              <Link href="/track">Track Progress</Link>
+              <Link href="/citizen/track">Track Progress</Link>
             </Button>
           </div>
         </div>
