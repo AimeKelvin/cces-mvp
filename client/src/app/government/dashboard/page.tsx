@@ -1,38 +1,27 @@
-import { AppSidebar } from "@/components/app-sidebar"
-import { ChartAreaInteractive } from "@/components/chart-area-interactive"
-import { DataTable } from "@/components/data-table"
-import { SectionCards } from "@/components/section-cards"
-import { SiteHeader } from "@/components/site-header"
-import {
-  SidebarInset,
-  SidebarProvider,
-} from "@/components/ui/sidebar"
+// app/dashboard/page.tsx
+"use client";
 
-import data from "./data.json"
+import { ComplaintCard } from "@/components/customs/gov/complaint-card";
+import { complaints } from "./data";
 
-export default function Page() {
+export default function ComplaintsDashboardPage() {
   return (
-    <SidebarProvider
-      style={
-        {
-          "--sidebar-width": "calc(var(--spacing) * 72)",
-          "--header-height": "calc(var(--spacing) * 12)",
-        } as React.CSSProperties
-      }
-    >
-      <AppSidebar variant="inset" />
-      <SidebarInset>
-        <SiteHeader />
-        <div className="flex flex-1 flex-col">
-          <div className="@container/main flex flex-1 flex-col gap-2">
-            <div className="flex flex-col gap-4 py-4 md:gap-6 md:py-6">
-              <SectionCards />
-              
-              <DataTable data={data} />
-            </div>
-          </div>
-        </div>
-      </SidebarInset>
-    </SidebarProvider>
-  )
+    <div className="p-6">
+      <h1 className="text-2xl font-bold text-black mb-6">Submitted Complaints</h1>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {complaints.map((complaint) => (
+          <ComplaintCard
+            key={complaint.id}
+            id={complaint.id}
+            name={complaint.name}
+            email={complaint.email}
+            category={complaint.category}
+            message={complaint.message}
+            submittedAt={complaint.submittedAt}
+            status={complaint.status}
+          />
+        ))}
+      </div>
+    </div>
+  );
 }
