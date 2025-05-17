@@ -1,54 +1,75 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { BadgeCheck, Hourglass, XCircle } from "lucide-react";
-import Navbar from "@/components/customs/citizen/Navbar";
-import Footer from "@/components/ui/Footer";
-import { complaints } from "@/lib/data";
+import { useState } from 'react';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
+import { BadgeCheck, Hourglass, XCircle } from 'lucide-react';
+import Navbar from '@/components/customs/citizen/Navbar';
+import Footer from '@/components/ui/Footer';
+import { trackComplaint } from '@/lib/api';
 
 type Complaint = {
-  id: string;
-  name: string;
-  email: string;
-  category: string;
-  phone: string;
-  address: string;
-  message: string;
-  submittedAt: string;
-  location: string;
-  image: string;
   status: string;
-  response: string | null;
+  response?: string | null;
+  assignedTo?: string | null;
+  category: string;
+  title?: string;
+  description: string;
+  senderName?: string | null;
+  createdAt: string;
+  ticketId: string;
 };
 
 export default function TrackPage() {
-  const [ticketId, setTicketId] = useState("");
+  const [ticketId, setTicketId] = useState('');
   const [complaint, setComplaint] = useState<Complaint | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
 
-  const handleTrack = () => {
-    const foundComplaint = complaints.find((c) => c.id === ticketId);
-    if (foundComplaint) {
-      setComplaint(foundComplaint);
-    } else {
-      setComplaint(null);
-      alert("Complaint not found. Please check your Ticket ID.");
+  const handleTrack = async () => {
+    if (!ticketId.trim()) {
+      setError('Please enter your Ticket ID.');
+      return;
+    }
+
+    setLoading(true);
+    setError('');
+    setComplaint(null);
+
+    try {
+      const data = await trackComplaint(ticketId.trim());
+      if (!data || !data.status) {
+        throw new Error('Not found');
+      }
+      setComplaint({
+        ticketId: data.ticketId || ticketId,
+        status: data.status,
+        response: data.response ?? null,
+        assignedTo: data.assignedTo ?? null,
+        category: data.category,
+        title: data.title,
+        description: data.description,
+        senderName: data.senderName ?? null,
+        createdAt: data.createdAt,
+      });
+    } catch (err) {
+      setError('Complaint not found. Please check your Ticket ID.');
+      // Optionally log error: console.error('Track complaint error:', err);
+    } finally {
+      setLoading(false);
     }
   };
 
-  const statusColor = {
-    Pending: "bg-yellow-100 text-yellow-700",
-    "In Progress": "bg-blue-100 text-blue-700",
-    Resolved: "bg-green-100 text-green-700",
-    Rejected: "bg-red-100 text-red-700",
+  const statusColor: Record<string, string> = {
+    Pending: 'bg-yellow-100 text-yellow-700',
+    'In Progress': 'bg-blue-100 text-blue-700',
+    Resolved: 'bg-green-100 text-green-700',
+    Rejected: 'bg-red-100 text-red-700',
   };
 
-  const statusIcon = {
+  const statusIcon: Record<string, JSX.Element> = {
     Pending: <Hourglass className="w-5 h-5 text-yellow-600" />,
-    "In Progress": (
-      <Hourglass className="w-5 h-5 animate-spin text-blue-600" />
-    ),
+    'In Progress': <Hourglass className="w-5 h-5 animate-spin text-blue-600" />,
     Resolved: <BadgeCheck className="w-5 h-5 text-green-600" />,
     Rejected: <XCircle className="w-5 h-5 text-red-600" />,
   };
@@ -68,14 +89,26 @@ export default function TrackPage() {
             value={ticketId}
             onChange={(e) => setTicketId(e.target.value)}
             className="w-full sm:max-w-md text-lg"
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') handleTrack();
+            }}
+            disabled={loading}
+            autoFocus
+            aria-label="Ticket ID"
           />
           <Button
             onClick={handleTrack}
+            disabled={loading || !ticketId.trim()}
             className="w-full sm:w-auto px-8 py-3 text-base font-medium rounded-md text-white bg-green-600 hover:bg-green-700"
           >
-            Track
+            {loading ? 'Tracking...' : 'Track'}
           </Button>
         </div>
+
+        {/* Error */}
+        {error && (
+          <p className="text-center text-red-600 font-medium mb-6">{error}</p>
+        )}
 
         {/* Complaint Details */}
         {complaint && (
@@ -83,14 +116,14 @@ export default function TrackPage() {
             {/* Header */}
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
               <h2 className="text-2xl font-semibold text-gray-800">
-                Ticket ID: {complaint.id}
+                Ticket ID: {complaint.ticketId}
               </h2>
               <div
                 className={`flex items-center gap-2 px-3 py-1 rounded-full text-base font-medium ${
-                  statusColor[complaint.status as keyof typeof statusColor]
+                  statusColor[complaint.status] || 'bg-gray-100 text-gray-800'
                 }`}
               >
-                {statusIcon[complaint.status as keyof typeof statusIcon]}
+                {statusIcon[complaint.status] || null}
                 {complaint.status}
               </div>
             </div>
@@ -103,47 +136,33 @@ export default function TrackPage() {
               </div>
               <div>
                 <p className="text-gray-500 font-medium">Submitted On</p>
-                <p>{complaint.submittedAt}</p>
+                <p>
+                  {complaint.createdAt
+                    ? new Date(complaint.createdAt).toLocaleString('en-US', {
+                        timeZone: 'Africa/Harare',
+                        weekday: 'long',
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric',
+                        hour: 'numeric',
+                        minute: 'numeric',
+                        hour12: true,
+                      })
+                    : 'Unknown'}
+                </p>
               </div>
               <div className="sm:col-span-2">
                 <p className="text-gray-500 font-medium">Description</p>
-                <p className="mt-1 text-gray-700">{complaint.message}</p>
-              </div>
-              <div className="sm:col-span-2">
-                <p className="text-gray-500 font-medium">Location</p>
-                <p className="mt-1">{complaint.location}</p>
+                <p className="mt-1 text-gray-700">{complaint.description}</p>
               </div>
               <div className="sm:col-span-2">
                 <p className="text-gray-500 font-medium">Submitted By</p>
-                <p className="mt-1">
-                  {complaint.name} ({complaint.email})
-                </p>
+                <p className="mt-1">{complaint.senderName || 'Unknown'}</p>
               </div>
-              {complaint.phone && (
-                <div>
-                  <p className="text-gray-500 font-medium">Phone</p>
-                  <p className="mt-1">{complaint.phone}</p>
-                </div>
-              )}
-              {complaint.address && (
-                <div>
-                  <p className="text-gray-500 font-medium">Address</p>
-                  <p className="mt-1">{complaint.address}</p>
-                </div>
-              )}
-              {complaint.image && (
-                <div className="sm:col-span-2">
-                  <p className="text-gray-500 font-medium">Attached Image</p>
-                  <a
-                    href={complaint.image}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="mt-1 text-blue-600 hover:underline"
-                  >
-                    View Image
-                  </a>
-                </div>
-              )}
+              <div className="sm:col-span-2">
+                <p className="text-gray-500 font-medium">Assigned To</p>
+                <p className="mt-1">{complaint.assignedTo || 'Unassigned'}</p>
+              </div>
               {complaint.response && (
                 <div className="sm:col-span-2">
                   <p className="text-gray-500 font-medium">Official Response</p>

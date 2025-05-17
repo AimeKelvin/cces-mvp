@@ -26,14 +26,21 @@ export async function postComplaint(data: {
   }
 }
 
-export async function trackComplaint(ticketId: string) {
-  try {
-    const res = await fetch(`${BASE_URL}/api/complaints/track/${ticketId}`);
-    if (!res.ok) throw new Error("Complaint not found");
-    const data = await res.json();
-    return data;
-  } catch (err) {
-    console.error("Tracking error:", err);
-    throw err;
+export async function trackComplaint(ticketId: string): Promise<{
+  title: string;
+  description: string;
+  senderName: string;
+  location: {
+    city: string;
+    district: string;
+    sector: string;
+  };
+}> {
+  const res = await fetch(`${BASE_URL}/api/complaints/track/${ticketId}`);
+
+  if (!res.ok) {
+    throw new Error('Complaint not found');
   }
+
+  return await res.json(); // Return the flat response directly
 }
