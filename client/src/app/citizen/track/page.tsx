@@ -6,30 +6,16 @@ import { Button } from "@/components/ui/button";
 import { BadgeCheck, Hourglass, XCircle } from "lucide-react";
 import Navbar from "@/components/customs/citizen/Navbar";
 import Footer from "@/components/ui/Footer";
-
-const mockComplaint = {
-  ticketId: "TKT-164568",
-  title: "Broken streetlight on KK 12 Ave",
-  description:
-    "The streetlight near the bus stop has been broken for over a week. It gets very dark at night, making it unsafe.",
-  dateSubmitted: "2025-05-14",
-  status: "In Progress",
-  response:
-    "We have dispatched a maintenance team. Expected resolution within 3 business days.",
-  organization: "Kigali City Infrastructure Department",
-  citizen: {
-    name: "John Doe",
-    email: "john@example.com",
-  },
-};
+import { complaints } from "@/lib/data";
 
 export default function TrackPage() {
   const [ticketId, setTicketId] = useState("");
   const [complaint, setComplaint] = useState<any | null>(null);
 
   const handleTrack = () => {
-    if (ticketId === mockComplaint.ticketId) {
-      setComplaint(mockComplaint);
+    const foundComplaint = complaints.find((c) => c.id === ticketId);
+    if (foundComplaint) {
+      setComplaint(foundComplaint);
     } else {
       setComplaint(null);
       alert("Complaint not found. Please check your Ticket ID.");
@@ -71,7 +57,6 @@ export default function TrackPage() {
           <Button
             onClick={handleTrack}
             className="w-full sm:w-auto px-8 py-3 text-base font-medium rounded-md text-white bg-green-600 hover:bg-green-700"
-          
           >
             Track
           </Button>
@@ -83,12 +68,12 @@ export default function TrackPage() {
             {/* Header */}
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
               <h2 className="text-2xl font-semibold text-gray-800">
-                Ticket ID: {complaint.ticketId}
+                Ticket ID: {complaint.id}
               </h2>
               <div
-                className={`flex items-center gap-2 px-3 py-1 rounded-full text-base font-medium ${statusColor[
-                  complaint.status as keyof typeof statusColor
-                ]}`}
+                className={`flex items-center gap-2 px-3 py-1 rounded-full text-base font-medium ${
+                  statusColor[complaint.status as keyof typeof statusColor]
+                }`}
               >
                 {statusIcon[complaint.status as keyof typeof statusIcon]}
                 {complaint.status}
@@ -98,35 +83,52 @@ export default function TrackPage() {
             {/* Info Grid */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 text-gray-800 text-base">
               <div>
-                <p className="text-gray-500 font-medium">Title</p>
-                <p>{complaint.title}</p>
+                <p className="text-gray-500 font-medium">Category</p>
+                <p>{complaint.category}</p>
               </div>
               <div>
                 <p className="text-gray-500 font-medium">Submitted On</p>
-                <p>{complaint.dateSubmitted}</p>
+                <p>{complaint.submittedAt}</p>
               </div>
               <div className="sm:col-span-2">
                 <p className="text-gray-500 font-medium">Description</p>
-                <p className="mt-1 text-gray-700">{complaint.description}</p>
+                <p className="mt-1 text-gray-700">{complaint.message}</p>
               </div>
               <div className="sm:col-span-2">
-                <p className="text-gray-500 font-medium">
-                  Responsible Organization
-                </p>
-                <p className="mt-1">{complaint.organization}</p>
-              </div>
-              <div className="sm:col-span-2">
-                <p className="text-gray-500 font-medium">Official Response</p>
-                <div className="mt-1 p-4 bg-gray-50 border border-gray-200 rounded-lg text-gray-700">
-                  {complaint.response}
-                </div>
+                <p className="text-gray-500 font-medium">Location</p>
+                <p className="mt-1">{complaint.location}</p>
               </div>
               <div className="sm:col-span-2">
                 <p className="text-gray-500 font-medium">Submitted By</p>
                 <p className="mt-1">
-                  {complaint.citizen.name} ({complaint.citizen.email})
+                  {complaint.name} ({complaint.email})
                 </p>
               </div>
+              {complaint.phone && (
+                <div>
+                  <p className="text-gray-500 font-medium">Phone</p>
+                  <p className="mt-1">{complaint.phone}</p>
+                </div>
+              )}
+              {complaint.address && (
+                <div>
+                  <p className="text-gray-500 font-medium">Address</p>
+                  <p className="mt-1">{complaint.address}</p>
+                </div>
+              )}
+              {complaint.image && (
+                <div className="sm:col-span-2">
+                  <p className="text-gray-500 font-medium">Attached Image</p>
+                  <a
+                    href={complaint.image}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mt-1 text-blue-600 hover:underline"
+                  >
+                    View Image
+                  </a>
+                </div>
+              )}
             </div>
           </div>
         )}

@@ -2,8 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { ComplaintCard } from "@/components/customs/gov/complaint-card";
-import { complaints } from "./data";
-
+import { complaints } from "@/lib/data";
 import {
   Select,
   SelectContent,
@@ -12,16 +11,26 @@ import {
   SelectLabel,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select"; // adjust the import path as per your setup
+} from "@/components/ui/select";
 
 type Complaint = {
   id: string;
   name: string;
   email: string;
   category: string;
+  phone: string;
+  address: string;
   message: string;
   submittedAt: string;
+  location: string;
+  image: string;
   status: string;
+};
+
+// Placeholder for future API integration
+const fetchComplaints = async (): Promise<Complaint[]> => {
+  // Simulate API call (replace with actual API call later)
+  return Promise.resolve(complaints);
 };
 
 function classifyComplaint(complaint: Complaint): "urgent" | "important" | "canWait" {
@@ -35,17 +44,31 @@ function classifyComplaint(complaint: Complaint): "urgent" | "important" | "canW
 }
 
 export default function ComplaintsPage() {
-  const [filteredComplaints, setFilteredComplaints] = useState<Complaint[]>(complaints);
+  const [filteredComplaints, setFilteredComplaints] = useState<Complaint[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [filter, setFilter] = useState<"all" | "urgent" | "important" | "canWait">("all");
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    // Fetch complaints (simulated API call)
+    fetchComplaints()
+      .then((data) => {
+        setFilteredComplaints(data);
+        setIsLoading(false);
+      })
+      .catch((error) => {
+        console.error("Error fetching complaints:", error);
+        setFilteredComplaints(complaints); // Fallback to local data
+        setIsLoading(false);
+      });
+  }, []);
 
   useEffect(() => {
     const filtered = complaints.filter((complaint) => {
       const category = classifyComplaint(complaint);
       const matchesFilter = filter === "all" || category === filter;
 
-      const content =
-        `${complaint.category} ${complaint.message} ${complaint.name} ${complaint.email}`.toLowerCase();
+      const content = `${complaint.category} ${complaint.message} ${complaint.name} ${complaint.email} ${complaint.phone} ${complaint.address} ${complaint.location}`.toLowerCase();
       const matchesSearch = content.includes(searchTerm.toLowerCase());
 
       return matchesFilter && matchesSearch;
@@ -67,8 +90,12 @@ export default function ComplaintsPage() {
         name={complaint.name}
         email={complaint.email}
         category={complaint.category}
+        phone={complaint.phone}
+        address={complaint.address}
         message={complaint.message}
         submittedAt={complaint.submittedAt}
+        location={complaint.location}
+        image={complaint.image}
         status={complaint.status}
       />
     ));
@@ -102,7 +129,11 @@ export default function ComplaintsPage() {
       </div>
 
       {/* Complaints */}
-      {isEmpty ? (
+      {isLoading ? (
+        <div className="text-center py-20 text-gray-500 dark:text-gray-400 text-xl font-semibold">
+          Loading complaints...
+        </div>
+      ) : isEmpty ? (
         <div className="text-center py-20 text-gray-500 dark:text-gray-400 text-xl font-semibold">
           🎉 Hooray! No complaints at the moment.
         </div>
