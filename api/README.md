@@ -1,11 +1,11 @@
 # 📣 Citizen Engagement System Backend (MVP)
 
-A full-stack-ready backend API that enables citizens to submit public complaints, automatically routes them to relevant government agencies using AI (Gemini), and allows government officials to register, manage, and respond to them.
+A full-stack-ready backend API that enables citizens to submit public complaints, automatically routes them to relevant government agencies using keyword-based classifier algorithm, and allows government officials to register, manage, and respond to them.
 
 ## 🚀 Features
 
 - Submit complaints with **no signup required**
-- Gemini AI-assisted **category detection** (Water, Electricity, Health, etc.)
+- keyword-based classifier. **category detection** (Water, Electricity, Health, etc.)
 - Auto-assignment to the correct **government department**
 - Track complaints using **ticket ID (JB-XXXX)**
 - JWT-authenticated **government dashboard**
