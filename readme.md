@@ -32,6 +32,7 @@ Jambo is a minimal yet powerful MVP built for the Hackathon challenge to address
 - Clear and simple workflows (from submission to resolution)
 - Extensible architecture for future upgrades (AI, analytics, notifications)
 
+
 ## 📂 Folder Structure
 
 ├── backend/               # Express.js backend (JavaScript)
@@ -56,4 +57,3 @@ Jambo is a minimal yet powerful MVP built for the Hackathon challenge to address
 ├── .gitignore
 ├── README.md
 └── package.json           # Root-level dependency management (if monorepo style)
-
