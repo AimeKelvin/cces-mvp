@@ -10,18 +10,30 @@ export async function postComplaint(data: {
     district: string;
     sector: string;
   };
-}) {
+}): Promise<{ ticketId: string; message: string }> {
   try {
     const res = await fetch(`${BASE_URL}/api/complaints`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data)
+      body: JSON.stringify(data),
     });
 
     if (!res.ok) throw new Error('Failed to submit complaint');
 
-    return await res.json(); // contains ticketId, message, etc.
+    return await res.json(); // must include ticketId
   } catch (err) {
+    throw err;
+  }
+}
+
+export async function trackComplaint(ticketId: string) {
+  try {
+    const res = await fetch(`${BASE_URL}/api/complaints/track/${ticketId}`);
+    if (!res.ok) throw new Error("Complaint not found");
+    const data = await res.json();
+    return data;
+  } catch (err) {
+    console.error("Tracking error:", err);
     throw err;
   }
 }
