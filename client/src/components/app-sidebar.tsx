@@ -32,14 +32,6 @@ const data = {
     email: "officer@gov.org",
     avatar: "/avatars/gov-user.jpg",
   },
-  navMain: [
-    
-    {
-      title: "Complaints",
-      url: "/dashboard/complaints",
-      icon: IconFileDescription,
-    },
-  ],
   navSecondary: [
     {
       title: "Settings",
@@ -59,15 +51,16 @@ const data = {
   ],
   documents: [
     {
+      name: "Civic Complaint",
+      url: "/government/dashboard",
+      icon: IconFileDescription,
+    },
+    {
       name: "All Reports",
       url: "/dashboard/reports",
       icon: IconReport,
     },
-    {
-      name: "Complaint Log",
-      url: "/dashboard/complaints",
-      icon: IconFileDescription,
-    },
+    
   ],
 }
 
@@ -89,7 +82,6 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         </SidebarMenu>
       </SidebarHeader>
       <SidebarContent>
-        <NavMain items={data.navMain} />
         <NavDocuments items={data.documents} />
         <NavSecondary items={data.navSecondary} className="mt-auto" />
       </SidebarContent>
