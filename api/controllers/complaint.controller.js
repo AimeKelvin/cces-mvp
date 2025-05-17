@@ -1,6 +1,6 @@
 import Complaint from '../models/Complaint.js';
 import GovernmentUser from '../models/GovernmentUser.js';
-import { categorizeComplaint } from '../services/ai.service.js';
+import { categorizeComplaint } from '../services/classifier.service.js';
 import { generateTicketId } from '../utils/ticket.util.js';
 
 export const submitComplaint = async (req, res) => {
