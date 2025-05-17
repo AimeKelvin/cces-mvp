@@ -1,7 +1,7 @@
 {
   "name": "cces-api",
   "version": "1.0.0",
-  "type":"module",
+  "type": "module",
   "main": "server.js",
   "scripts": {
     "start": "nodemon server.js"
@@ -11,6 +11,7 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "@google/generative-ai": "^0.24.1",
     "bcryptjs": "^3.0.2",
     "cors": "^2.8.5",
     "dotenv": "^16.5.0",
