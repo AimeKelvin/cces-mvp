@@ -1,45 +1,96 @@
-# 🏛️ Citizen Complaint Engagement System – MVP
+# 📣 Citizen Engagement System Backend (MVP)
 
-An AI-powered backend system for managing public complaints and routing them to the correct government departments.
+A full-stack-ready backend API that enables citizens to submit public complaints, automatically routes them to relevant government agencies using AI (Gemini), and allows government officials to register, manage, and respond to them.
 
-## 🔧 Tech Stack
-- Node.js + Express
-- MongoDB Atlas
-- JWT (for government user auth)
-- Google Gemini AI (for complaint classification)
+## 🚀 Features
 
----
+- Submit complaints with **no signup required**
+- Gemini AI-assisted **category detection** (Water, Electricity, Health, etc.)
+- Auto-assignment to the correct **government department**
+- Track complaints using **ticket ID (JB-XXXX)**
+- JWT-authenticated **government dashboard**
+- MongoDB Atlas integration
+- Clean, modular **ES module** architecture
 
-## 📌 Features
+## 📁 Folder Structure
+
+```
+config/         # DB connection
+controllers/    # Business logic
+middlewares/    # Auth & errors
+models/         # Mongoose schemas
+routes/         # API routing
+services/       # Auth, AI logic
+utils/          # Ticket generator
+```
+
+## 🌐 API Endpoints
 
 ### Citizens
-- Submit complaints (no login needed)
-- Receive a `ticketId` for tracking
-- Track complaints via `/api/track/:ticketId`
 
-### Government Officials
-- Login via `/api/auth/login`
-- JWT-protected dashboard:
-  - View assigned complaints
-  - Respond to them
+#### Submit a Complaint
 
-### AI Complaint Routing
-- Gemini AI classifies complaints into categories:
-  - Water & Sanitation
-  - Electricity
-  - Waste Management
-  - Roads & Infrastructure
-  - Security
-  - General
-- Automatically assigns to correct department official
+`POST /api/complaints`
+
+```json
+{
+  "title": "Power outage",
+  "description": "No electricity in my area for 3 days.",
+  "senderName": "John Doe",
+  "location": {
+    "city": "Kigali",
+    "district": "Gasabo",
+    "sector": "Kacyiru"
+  }
+}
+```
 
 ---
 
-## 📂 API Endpoints
+### Government
 
-### Citizen
-```http
-POST /api/complaints
-BODY: { "title": "...", "description": "..." }
+#### Register
 
-GET /api/track/:ticketId
+`POST /api/gov/register`
+
+```json
+{
+  "name": "RECO Official",
+  "email": "reco@gov.rw",
+  "password": "secret",
+  "category": "Electricity"
+}
+```
+
+#### Login
+
+`POST /api/gov/login`  
+Returns a JWT token.
+
+#### Fetch Assigned Complaints
+
+`GET /api/gov/complaints`  
+(Protected route, requires JWT)
+
+#### Respond to a Complaint
+
+`POST /api/gov/complaints/:id/respond`
+
+```json
+{ "response": "Team is on the ground." }
+```
+
+---
+
+## 🛠 Setup
+
+```bash
+git clone <repo-url>
+cd citizen-engagement-system
+npm install
+cp .env.example .env
+# Fill in MONGO_URI, JWT_SECRET, GEMINI_API_KEY in .env
+npm run dev
+```
+
+---
