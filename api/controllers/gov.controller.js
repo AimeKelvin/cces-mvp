@@ -44,3 +44,14 @@ export const respondToComplaint = async (req, res) => {
 
   res.json({ message: 'Response submitted' });
 };
+
+export const getLoggedInUser = async (req, res) => {
+  try {
+    const user = await GovernmentUser.findById(req.gov.id).select('-password'); // exclude password for security
+    if (!user) return res.status(404).json({ message: 'User not found' });
+    
+    res.json(user);
+  } catch (error) {
+    res.status(500).json({ message: 'Server error' });
+  }
+};

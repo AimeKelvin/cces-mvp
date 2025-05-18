@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useAuth } from "@/context/AuthContext";
 import { ComplaintCard } from "@/components/customs/gov/complaint-card";
-import { complaints } from "@/lib/data";
 import {
   Select,
   SelectContent,
@@ -27,12 +27,6 @@ type Complaint = {
   status: string;
 };
 
-// Placeholder for future API integration
-const fetchComplaints = async (): Promise<Complaint[]> => {
-  // Simulate API call (replace with actual API call later)
-  return Promise.resolve(complaints);
-};
-
 function classifyComplaint(complaint: Complaint): "urgent" | "important" | "canWait" {
   const content = `${complaint.category} ${complaint.message}`.toLowerCase();
   const urgentKeywords = ["sewage", "fire", "outage", "flood", "explosion"];
@@ -44,27 +38,43 @@ function classifyComplaint(complaint: Complaint): "urgent" | "important" | "canW
 }
 
 export default function ComplaintsPage() {
+  const { token } = useAuth();
+  const [allComplaints, setAllComplaints] = useState<Complaint[]>([]);
   const [filteredComplaints, setFilteredComplaints] = useState<Complaint[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [filter, setFilter] = useState<"all" | "urgent" | "important" | "canWait">("all");
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Fetch complaints (simulated API call)
-    fetchComplaints()
-      .then((data) => {
+    const fetchAssignedComplaints = async () => {
+      try {
+        const response = await fetch("http://localhost:5000/api/complaints/assigned", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (!response.ok) throw new Error("Failed to fetch");
+
+        const data = await response.json();
+        setAllComplaints(data);
         setFilteredComplaints(data);
+      } catch (error) {
+        console.error("Error fetching assigned complaints:", error);
+        setAllComplaints([]);
+        setFilteredComplaints([]);
+      } finally {
         setIsLoading(false);
-      })
-      .catch((error) => {
-        console.error("Error fetching complaints:", error);
-        setFilteredComplaints(complaints); // Fallback to local data
-        setIsLoading(false);
-      });
-  }, []);
+      }
+    };
+
+    if (token) {
+      fetchAssignedComplaints();
+    }
+  }, [token]);
 
   useEffect(() => {
-    const filtered = complaints.filter((complaint) => {
+    const filtered = allComplaints.filter((complaint) => {
       const category = classifyComplaint(complaint);
       const matchesFilter = filter === "all" || category === filter;
 
@@ -75,7 +85,7 @@ export default function ComplaintsPage() {
     });
 
     setFilteredComplaints(filtered);
-  }, [searchTerm, filter]);
+  }, [searchTerm, filter, allComplaints]);
 
   const urgent = filteredComplaints.filter((c) => classifyComplaint(c) === "urgent");
   const important = filteredComplaints.filter((c) => classifyComplaint(c) === "important");
@@ -128,7 +138,7 @@ export default function ComplaintsPage() {
         </Select>
       </div>
 
-      {/* Complaints */}
+      {/* Complaints Display */}
       {isLoading ? (
         <div className="text-center py-20 text-gray-500 dark:text-gray-400 text-xl font-semibold">
           Loading complaints...

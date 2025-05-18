@@ -11,9 +11,29 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { useState } from "react";
 
-export function SignupForm({ className, ...props }: React.ComponentProps<"div">) {
+const categories = [
+  { id: "water", name: "Water & Sanitation" },
+  { id: "education", name: "Education" },
+  { id: "health", name: "Health Services" },
+  { id: "transport", name: "Transport & Infrastructure" },
+  { id: "security", name: "Security & Safety" },
+];
+
+export function SignupForm({
+  className,
+  ...props
+}: React.ComponentProps<"div">) {
+  const [selectedCategory, setSelectedCategory] = useState<string>("");
+
   return (
     <div
       className={cn(
@@ -39,7 +59,7 @@ export function SignupForm({ className, ...props }: React.ComponentProps<"div">)
                   type="text"
                   placeholder="Ministry of Finance"
                   required
-                   className="border border-gray-400 text-black focus:border-blue-500 focus:ring-blue-500 focus:ring-1"
+                  className="border border-gray-400 text-black focus:border-blue-500 focus:ring-blue-500 focus:ring-1"
                 />
               </div>
               <div className="grid gap-1.5">
@@ -48,45 +68,66 @@ export function SignupForm({ className, ...props }: React.ComponentProps<"div">)
                   id="email"
                   type="email"
                   placeholder="you@example.com"
-                  className="border border-gray-400 text-black focus:border-blue-500 focus:ring-blue-500 focus:ring-1"
                   required
+                  className="border border-gray-400 text-black focus:border-blue-500 focus:ring-blue-500 focus:ring-1"
                 />
               </div>
               <div className="grid gap-1.5">
                 <Label htmlFor="category">Public Service Category</Label>
-                <Select required>
-                  <SelectTrigger id="category"  className="border border-gray-400 text-black focus:border-blue-500 focus:ring-blue-500 focus:ring-1">
+                <Select
+                  onValueChange={setSelectedCategory}
+                  required
+                >
+                  <SelectTrigger
+                    id="category"
+                    className="border border-gray-400 text-black focus:border-blue-500 focus:ring-blue-500 focus:ring-1"
+                  >
                     <SelectValue placeholder="Select a category" />
                   </SelectTrigger>
                   <SelectContent className="w-64 bg-white">
-                    <SelectItem value="health">Health</SelectItem>
-                    <SelectItem value="education">Education</SelectItem>
-                    <SelectItem value="infrastructure">Infrastructure</SelectItem>
-                    <SelectItem value="tax">Tax & Revenue</SelectItem>
-                    <SelectItem value="justice">Justice & Law</SelectItem>
-                    <SelectItem value="transport">Transport</SelectItem>
+                    {categories.map((category) => (
+                      <SelectItem key={category.id} value={category.id}>
+                        {category.name}
+                      </SelectItem>
+                    ))}
                   </SelectContent>
                 </Select>
               </div>
               <div className="grid gap-1.5">
                 <Label htmlFor="password">Password</Label>
-                <Input id="password" type="password" required  className="border border-gray-400 text-black focus:border-blue-500 focus:ring-blue-500 focus:ring-1"/>
+                <Input
+                  id="password"
+                  type="password"
+                  required
+                  className="border border-gray-400 text-black focus:border-blue-500 focus:ring-blue-500 focus:ring-1"
+                />
               </div>
               <div className="grid gap-1.5">
                 <Label htmlFor="confirm-password">Confirm Password</Label>
-                <Input id="confirm-password" type="password" required  className="border border-gray-400 text-black focus:border-blue-500 focus:ring-blue-500 focus:ring-1"/>
+                <Input
+                  id="confirm-password"
+                  type="password"
+                  required
+                  className="border border-gray-400 text-black focus:border-blue-500 focus:ring-blue-500 focus:ring-1"
+                />
               </div>
             </div>
 
             <div className="space-y-3">
-              <Button type="submit" className="w-full bg-blue-600 text-white hover:bg-blue-700">
+              <Button
+                type="submit"
+                className="w-full bg-blue-600 text-white hover:bg-blue-700"
+              >
                 Sign Up
               </Button>
             </div>
 
             <div className="mt-6 text-center text-sm text-gray-600">
               Already have an account?{" "}
-              <a href="/government/login" className="text-blue-700 font-medium hover:underline">
+              <a
+                href="/government/login"
+                className="text-blue-700 font-medium hover:underline"
+              >
                 Log in
               </a>
             </div>

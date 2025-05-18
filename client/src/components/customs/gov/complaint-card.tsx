@@ -1,6 +1,12 @@
 import React from "react";
 import Link from "next/link";
 
+interface Location {
+  city: string;
+  district: string;
+  sector: string;
+}
+
 interface Props {
   id: string;
   name: string;
@@ -9,6 +15,7 @@ interface Props {
   message: string;
   submittedAt: string;
   status: string;
+  location: Location;
 }
 
 export const ComplaintCard = ({
@@ -19,6 +26,7 @@ export const ComplaintCard = ({
   message,
   submittedAt,
   status,
+  location,
 }: Props) => {
   return (
     <Link href={`/government/dashboard/complaint/${id}`} className="block">
@@ -28,8 +36,11 @@ export const ComplaintCard = ({
           <span className="text-sm text-gray-500 dark:text-gray-400">{submittedAt}</span>
         </div>
         <p className="text-sm text-gray-700 dark:text-gray-300 mb-2">{message}</p>
-        <p className="text-sm text-gray-600 dark:text-gray-400">
+        <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">
           Submitted by: {name || "Anonymous"} ({email})
+        </p>
+        <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
+          Location: {location?.sector || "Unknown"}
         </p>
         <p
           className={`mt-2 inline-block px-2 py-1 rounded text-xs font-medium ${

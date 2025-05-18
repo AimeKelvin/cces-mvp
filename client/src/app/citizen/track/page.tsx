@@ -16,6 +16,7 @@ type Complaint = {
   title?: string;
   description: string;
   senderName?: string | null;
+  location?: string | null;
   createdAt: string;
   ticketId: string;
 };
@@ -41,6 +42,7 @@ export default function TrackPage() {
       if (!data || !data.status) {
         throw new Error('Not found');
       }
+
       setComplaint({
         ticketId: data.ticketId || ticketId,
         status: data.status,
@@ -50,11 +52,11 @@ export default function TrackPage() {
         title: data.title,
         description: data.description,
         senderName: data.senderName ?? null,
+        location: data.location ?? null,
         createdAt: data.createdAt,
       });
     } catch (err) {
       setError('Complaint not found. Please check your Ticket ID.');
-      // Optionally log error: console.error('Track complaint error:', err);
     } finally {
       setLoading(false);
     }
@@ -157,11 +159,21 @@ export default function TrackPage() {
               </div>
               <div className="sm:col-span-2">
                 <p className="text-gray-500 font-medium">Submitted By</p>
-                <p className="mt-1">{complaint.senderName || 'Unknown'}</p>
+                <p className="mt-1">
+                  {complaint.senderName?.trim() ? complaint.senderName : 'Unknown'}
+                </p>
               </div>
+              <p className="mt-1">
+  {typeof complaint.location === 'object' && complaint.location?.sector
+    ? complaint.location.sector
+    : 'Unknown'}
+</p>
+
               <div className="sm:col-span-2">
                 <p className="text-gray-500 font-medium">Assigned To</p>
-                <p className="mt-1">{complaint.assignedTo || 'Unassigned'}</p>
+                <p className="mt-1">
+                  {complaint.assignedTo?.trim() ? complaint.assignedTo : 'Unassigned'}
+                </p>
               </div>
               {complaint.response && (
                 <div className="sm:col-span-2">

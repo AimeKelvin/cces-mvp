@@ -44,3 +44,97 @@ export async function trackComplaint(ticketId: string): Promise<{
 
   return await res.json(); // Return the flat response directly
 }
+
+// Government User Registration
+export async function registerGovernmentUser(data: {
+  username: string;
+  email: string;
+  password: string;
+  organization: string;
+}): Promise<{ message: string }> {
+  const res = await fetch(`${BASE_URL}/api/gov/register`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data),
+  });
+
+  if (!res.ok) {
+    const error = await res.json();
+    throw new Error(error.message || 'Registration failed');
+  }
+
+  return await res.json();
+}
+
+// Government User Login
+export async function loginGovernmentUser(data: {
+  email: string;
+  password: string;
+}): Promise<{ token: string }> {
+  const res = await fetch(`${BASE_URL}/api/gov/login`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data),
+  });
+
+  if (!res.ok) {
+    const error = await res.json();
+    throw new Error(error.message || 'Login failed');
+  }
+
+  return await res.json(); // { token: "..." }
+}
+
+// src/lib/api.ts
+
+export const fetchGovComplaints = async () => {
+  const token = localStorage.getItem("authToken");
+
+  if (!token) {
+    throw new Error("No authentication token found.");
+  }
+
+  const res = await fetch(`${BASE_URL}/api/gov/complaints`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  if (!res.ok) {
+    throw new Error("Failed to fetch complaints.");
+  }
+
+  return res.json();
+};
+
+
+// Fetch logged-in government user data
+export async function fetchLoggedInGovernmentUser(): Promise<{
+  _id: string;
+  name: string;
+  email: string;
+  category: string;
+  // add any other fields your GovernmentUser model exposes (except password)
+}> {
+  const token = localStorage.getItem('authToken');
+
+  if (!token) {
+    throw new Error('No authentication token found.');
+  }
+
+  const res = await fetch(`${BASE_URL}/api/gov/me`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    },
+  });
+
+  if (!res.ok) {
+    const error = await res.json().catch(() => null);
+    throw new Error(error?.message || 'Failed to fetch logged-in user data.');
+  }
+
+  return res.json();
+}
+
+

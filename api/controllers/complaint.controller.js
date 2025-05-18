@@ -32,6 +32,8 @@ export const trackComplaint = async (req, res) => {
 
   res.json({
     status: complaint.status,
+    senderName: complaint.senderName,
+    location: complaint.location,
     response: complaint.response,
     assignedTo: complaint.assignedTo?.name || 'Unassigned',
     category: complaint.category,
