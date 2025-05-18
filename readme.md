@@ -5,6 +5,13 @@
 
 Jambo is a minimal yet powerful MVP built for the Hackathon challenge to address the problem of fragmented citizen complaints handling. This system enables citizens to easily submit feedback or complaints, and allows government agencies to respond, track, and manage these issues effectively.
 
+## 🔗 Live Demo
+
+👉 [Try it live here](https://jambo-client.vercel.app)  
+_(Replace the link above with your actual Vercel/Render URL)_
+
+---
+
 ## 🚀 Features
 
 ### 👤 Citizens
