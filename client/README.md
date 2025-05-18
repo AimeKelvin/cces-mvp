@@ -4,7 +4,7 @@ This is the frontend for **Jambo**, a minimal yet powerful MVP that allows citiz
 
 ## 📁 Project Structure
 
-This app uses the **App Router** (`/app`) provided by Next.js 13+ with TypeScript.
+This app uses the **App Router** (`/app`).
 ```
 jambo-frontend/
 │
