@@ -48,10 +48,10 @@ export async function trackComplaint(ticketId: string): Promise<{
 
 // Government User Registration
 export async function registerGovernmentUser(data: {
-  username: string;
+  name: string;
   email: string;
   password: string;
-  organization: string;
+  category: string;
 }): Promise<{ message: string }> {
   const res = await fetch(`${BASE_URL}/api/gov/register`, {
     method: 'POST',
