@@ -8,7 +8,6 @@ Jambo is a minimal yet powerful MVP built for the Hackathon challenge to address
 ## 🔗 Live Demo
 
 👉 [Try it live here](https://jambo-client.vercel.app)  
-_(Replace the link above with your actual Vercel/Render URL)_
 
 ---
 
