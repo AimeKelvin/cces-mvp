@@ -2,17 +2,24 @@
 
 import { useState } from "react"
 import Link from "next/link"
-import { Menu, X } from "lucide-react"
+import { useRouter } from "next/navigation"
+import { Menu, X, LogOut } from "lucide-react"
 
 const navLinks = [
   { label: "Dashboard", href: "/dashboard" },
   { label: "Settings", href: "/dashboard/settings" },
   { label: "Set up AI", href: "/dashboard/setup" },
-
 ]
 
 export default function Sidebar() {
   const [sidebarOpen, setSidebarOpen] = useState(false)
+  const router = useRouter()
+
+  const handleLogout = () => {
+    // Clear token or any auth data
+    localStorage.removeItem("token") // Adjust based on your storage method
+    router.push("/government/login")
+  }
 
   return (
     <>
@@ -45,6 +52,16 @@ export default function Sidebar() {
                 {link.label}
               </Link>
             ))}
+            <button
+              onClick={() => {
+                setSidebarOpen(false)
+                handleLogout()
+              }}
+              className="w-full text-left px-3 py-2 mt-4 rounded-lg text-red-600 hover:bg-red-50 flex items-center gap-2"
+            >
+              <LogOut className="w-4 h-4" />
+              Logout
+            </button>
           </nav>
         </div>
       </div>
@@ -64,6 +81,13 @@ export default function Sidebar() {
               {link.label}
             </Link>
           ))}
+          <button
+            onClick={handleLogout}
+            className="w-full text-left px-4 py-2 mt-4 rounded-md text-red-600 hover:bg-red-50 flex items-center gap-2"
+          >
+            <LogOut className="w-4 h-4" />
+            Logout
+          </button>
         </nav>
       </aside>
     </>
