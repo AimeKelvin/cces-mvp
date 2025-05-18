@@ -23,6 +23,8 @@ type Complaint = {
   updatedAt: string
 }
 
+const BASE_URL = process.env.NEXT_PUBLIC_API_URL;
+
 export default function DashboardPage() {
   const { token } = useAuth()
   const [complaints, setComplaints] = useState<Complaint[]>([])
@@ -30,11 +32,13 @@ export default function DashboardPage() {
   const [selectedComplaint, setSelectedComplaint] = useState<Complaint | null>(null)
   const [modalOpen, setModalOpen] = useState(false)
 
+
+
   useEffect(() => {
     const fetchComplaints = async () => {
       if (!token) return
       try {
-        const res = await fetch('http://localhost:5000/api/gov/complaints/', {
+        const res = await fetch(`${BASE_URL}/api/gov/complaints/`, {
           headers: { Authorization: `Bearer ${token}` },
         })
         const data = await res.json()
@@ -52,7 +56,7 @@ export default function DashboardPage() {
   const handleRespond = async (id: string, response: string) => {
     if (!token || !response) return
     try {
-      await fetch(`http://localhost:5000/api/gov/complaints/${id}/respond`, {
+      await fetch(`${BASE_URL}/api/gov/complaints/${id}/respond`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
