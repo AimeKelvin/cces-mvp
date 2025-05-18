@@ -21,6 +21,7 @@ export default function ChooseRole() {
   };
 
   return (
+    
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-green-100 to-white px-4">
       <motion.div
         initial={{ opacity: 0, y: 20 }}

@@ -4,6 +4,7 @@ import { useEffect, useState } from "react"
 import { useAuth } from "@/context/AuthContext"
 import { Badge } from "@/components/ui/badge"
 import ComplaintModal from "@/components/customs/gov/ComplaintModal"
+import Sidebar from "@/components/customs/gov/sidebar"
 
 type Complaint = {
   _id: string
@@ -48,7 +49,7 @@ export default function DashboardPage() {
     fetchComplaints()
   }, [token])
 
- const handleRespond = async (id: string, response: string) => {
+  const handleRespond = async (id: string, response: string) => {
     if (!token || !response) return
     try {
       await fetch(`http://localhost:5000/api/gov/complaints/${id}/respond`, {
@@ -79,53 +80,64 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-10 px-4 md:px-8">
-      <div className="max-w-5xl mx-auto">
-        <h1 className="text-3xl font-bold text-gray-800 mb-6">📋 Assigned Complaints</h1>
+    <>
+      <Sidebar />
+      <main className="pt-16 md:pt-6 md:ml-64 px-4 min-h-screen bg-gray-50">
 
-        {loading ? (
-          <div className="text-center py-20 text-gray-500">Loading complaints...</div>
-        ) : complaints.length === 0 ? (
-          <div className="text-center py-20 text-gray-500">No complaints assigned.</div>
-        ) : (
-          <div className="grid gap-6 md:grid-cols-2">
-            {complaints.map((complaint) => (
-              <div
-                key={complaint._id}
-                onClick={() => {
-                  setSelectedComplaint(complaint)
-                  setModalOpen(true)
-                }}
-                className="cursor-pointer bg-white rounded-xl shadow-md hover:shadow-lg transition-shadow p-5 border border-gray-100"
-              >
-                <div className="flex items-center justify-between mb-2">
-                  <h2 className="text-xl font-semibold text-gray-800">{complaint.title}</h2>
-                  <Badge className={statusColor(complaint.status)}>
-                    {complaint.status}
-                  </Badge>
-                </div>
-                <p className="text-gray-600 text-sm line-clamp-3">{complaint.description}</p>
+        <div className="max-w-6xl mx-auto">
+          <h1 className="text-2xl font-semibold text-gray-900 mb-6">
+            Assigned Complaints
+          </h1>
 
-                <div className="mt-4 text-sm text-gray-500 space-y-1">
-                  <div><span className="font-medium text-gray-700">Sector:</span> {complaint.location?.sector}</div>
-                  <div>
-                    <span className="font-medium text-gray-700">Date:</span>{' '}
-                    {new Date(complaint.createdAt).toLocaleString()}
+          {loading ? (
+            <div className="text-center py-24 text-gray-500 text-sm">Loading complaints...</div>
+          ) : complaints.length === 0 ? (
+            <div className="text-center py-24 text-gray-500 text-sm">No complaints assigned to you.</div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+              {complaints.map((complaint) => (
+                <div
+                  key={complaint._id}
+                  onClick={() => {
+                    setSelectedComplaint(complaint)
+                    setModalOpen(true)
+                  }}
+                  className="cursor-pointer bg-white border border-gray-100 rounded-xl shadow-sm hover:shadow-md transition-all p-5"
+                >
+                  <div className="flex items-center justify-between mb-2">
+                    <h2 className="text-lg font-medium text-gray-900">{complaint.title}</h2>
+                    <Badge className={statusColor(complaint.status)}>
+                      {complaint.status}
+                    </Badge>
+                  </div>
+
+                  <p className="text-sm text-gray-600 line-clamp-3 mb-3">
+                    {complaint.description}
+                  </p>
+
+                  <div className="text-xs text-gray-500 space-y-1">
+                    <div>
+                      <span className="font-medium text-gray-700">Sector:</span>{' '}
+                      {complaint.location?.sector}
+                    </div>
+                    <div>
+                      <span className="font-medium text-gray-700">Date:</span>{' '}
+                      {new Date(complaint.createdAt).toLocaleDateString()}
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
+              ))}
+            </div>
+          )}
+        </div>
 
-      {/* Modal */}
-      <ComplaintModal
-        open={modalOpen}
-        onClose={() => setModalOpen(false)}
-        complaint={selectedComplaint}
-        onRespond={handleRespond}
-      />
-    </div>
+        <ComplaintModal
+          open={modalOpen}
+          onClose={() => setModalOpen(false)}
+          complaint={selectedComplaint}
+          onRespond={handleRespond}
+        />
+      </main>
+    </>
   )
 }
