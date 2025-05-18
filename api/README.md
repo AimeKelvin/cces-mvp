@@ -2,6 +2,8 @@
 
 A full-stack-ready backend API that enables citizens to submit public complaints, automatically routes them to relevant government agencies using keyword-based classifier algorithm, and allows government officials to register, manage, and respond to them.
 
+## API BASE URL hosted on Render: https://complaint-aqv0.onrender.com
+
 ## 🚀 Features
 
 - Submit complaints with **no signup required**
@@ -15,34 +17,15 @@ A full-stack-ready backend API that enables citizens to submit public complaints
 ## 📁 Folder Structure
 
 ```
-Based on the folder structure in the image, I'll add the specific files visible under each directory:
+config/         # Database connection settings  
+controllers/    # Core business logic for handling requests  
+middlewares/    # Middleware for authentication and error handling  
+models/         # Mongoose schemas for data modeling  
+routes/         # API endpoint routing definitions  
+services/       # Logic for authentication and classification services  
+utils/          # Utility functions, including ticket generation  
 
-config/         # DB connection
-  db.js         # Database configuration
-controllers/    # Business logic
-  complaint_controller.js  # Complaint handling logic
-  gov_controller.js        # Government-related logic
-middlewares/    # Auth & errors
-  auth_middleware.js       # Authentication middleware
-  error_middleware.js      # Error handling middleware
-models/         # Mongoose schemas
-  Complaint.js             # Complaint schema
-  GovernmentUser.js        # Government user schema
-routes/         # API routing
-  complaint_routes.js      # Complaint API routes
-  gov_routes.js            # Government API routes
-services/       # Auth, classifier logic
-  auth_service.js          # Authentication service
-  classifier_service.js    # Classifier logic
-utils/          # Ticket generator
-  ticket_utils.js          # Ticket generation utilities
-  env                      # Environment variables
-
-Additionally, there are root-level files:
-- app.js                  # Main application entry point
-- package-lock.json       # Dependency lock file
-- package.json            # Project metadata and dependencies
-- .gitignore              # Git ignore rules
+Root-level files include the main app entry, dependency configurations, and Git ignore rules.
 ```
 
 ## 🌐 API Endpoints
