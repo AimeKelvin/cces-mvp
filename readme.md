@@ -33,5 +33,5 @@ Jambo is a minimal yet powerful MVP built for the Hackathon challenge to address
 - Extensible architecture for future upgrades (AI, analytics, notifications)
 
   ## KEY POINT
-  Complaint clarrification was done by a simple algorithm that classifies a complaint based on the words it contains in its title and description. This is only for MVP purpose, the app is extensible therefore integrating an AI model will be very easy.
+  Complaint classification was done by a simple algorithm that classifies a complaint based on the words it contains in its title and description. This is only for MVP purpose, the app is extensible therefore integrating an AI model will be very easy.
 
