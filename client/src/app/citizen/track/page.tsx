@@ -1,5 +1,6 @@
 'use client';
 
+import React from 'react';
 import { useState } from 'react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
@@ -7,6 +8,12 @@ import { BadgeCheck, Hourglass, XCircle } from 'lucide-react';
 import Navbar from '@/components/customs/citizen/Navbar';
 import Footer from '@/components/ui/Footer';
 import { trackComplaint } from '@/lib/api';
+
+type Location = {
+  city?: string;
+  district?: string;
+  sector?: string;
+};
 
 type Complaint = {
   status: string;
@@ -16,7 +23,7 @@ type Complaint = {
   title?: string;
   description: string;
   senderName?: string | null;
-  location?: string | null;
+  location?: Location | null;
   createdAt: string;
   ticketId: string;
 };
@@ -38,10 +45,21 @@ export default function TrackPage() {
     setComplaint(null);
 
     try {
-      const data = await trackComplaint(ticketId.trim());
+      const data = await trackComplaint(ticketId.trim()) as Complaint;
+
       if (!data || !data.status) {
         throw new Error('Not found');
       }
+
+      // Defensive parsing of location (make sure it's an object or null)
+      const loc: Location | null =
+        data.location && typeof data.location === 'object'
+          ? {
+              city: data.location.city ?? undefined,
+              district: data.location.district ?? undefined,
+              sector: data.location.sector ?? undefined,
+            }
+          : null;
 
       setComplaint({
         ticketId: data.ticketId || ticketId,
@@ -52,7 +70,7 @@ export default function TrackPage() {
         title: data.title,
         description: data.description,
         senderName: data.senderName ?? null,
-        location: data.location ?? null,
+        location: loc,
         createdAt: data.createdAt,
       });
     } catch (err) {
@@ -163,11 +181,12 @@ export default function TrackPage() {
                   {complaint.senderName?.trim() ? complaint.senderName : 'Unknown'}
                 </p>
               </div>
-              <p className="mt-1">
-  {typeof complaint.location === 'object' && complaint.location?.sector
-    ? complaint.location.sector
-    : 'Unknown'}
-</p>
+              <div>
+                <p className="text-gray-500 font-medium">Location (Sector)</p>
+                <p className="mt-1">
+                  {complaint.location?.sector || 'Unknown'}
+                </p>
+              </div>
 
               <div className="sm:col-span-2">
                 <p className="text-gray-500 font-medium">Assigned To</p>
