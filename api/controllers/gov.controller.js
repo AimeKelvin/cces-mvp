@@ -13,7 +13,7 @@ export const registerGov = async (req, res) => {
     password: await hashPassword(password)
   });
 
-  res.status(201).json({ message: 'Account created', });
+  res.status(201).json({ message: 'Account created' });
 };
 
 export const loginGov = async (req, res) => {
@@ -45,9 +45,25 @@ export const respondToComplaint = async (req, res) => {
   res.json({ message: 'Response submitted' });
 };
 
+export const getComplaintById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const complaint = await (await import('../models/Complaint.js')).default.findOne({ _id: id, assignedTo: req.gov.id });
+
+    if (!complaint) {
+      return res.status(404).json({ message: 'Complaint not found or not assigned to you' });
+    }
+
+    res.json(complaint);
+  } catch (error) {
+    console.error('Error fetching complaint:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
 export const getLoggedInUser = async (req, res) => {
   try {
-    const user = await GovernmentUser.findById(req.gov.id).select('-password'); // exclude password for security
+    const user = await GovernmentUser.findById(req.gov.id).select('-password');
     if (!user) return res.status(404).json({ message: 'User not found' });
     
     res.json(user);
