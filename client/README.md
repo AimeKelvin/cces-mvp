@@ -37,7 +37,7 @@ jambo-frontend/
 First, install dependencies:
 
 ```bash
-npm install
+npm install --legacy-peer-deps
 # or
 yarn install
 
