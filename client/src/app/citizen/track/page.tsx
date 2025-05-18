@@ -155,7 +155,7 @@ export default function TrackPage() {
                 <p>{complaint.category}</p>
               </div>
               <div>
-                <p className="text-gray-500 font-medium">Submitted On</p>
+                <p className="text-gray-500 font-medium">Submit Date</p>
                 <p>
                   {complaint.createdAt
                     ? new Date(complaint.createdAt).toLocaleString('en-US', {
