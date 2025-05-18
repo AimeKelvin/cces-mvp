@@ -17,7 +17,7 @@ export default function Sidebar() {
 
   const handleLogout = () => {
     // Clear token or any auth data
-    localStorage.removeItem("token") // Adjust based on your storage method
+    localStorage.removeItem("authToken") // Adjust based on your storage method
     router.push("/government/login")
   }
 
