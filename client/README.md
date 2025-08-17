@@ -2,7 +2,7 @@
 
 This is the frontend for **Jambo**, a minimal yet powerful MVP that allows citizens to submit complaints and government officials to view, manage, and respond to them. Built with **Next.js**, **TypeScript**, and **Tailwind CSS**, the UI is clean, responsive, and optimized for ease of use on both desktop and mobile.
 
-## 📁 Project Structure
+## 📁 Project Structur
 
 This app uses the **App Router** (`/app`).
 ```
