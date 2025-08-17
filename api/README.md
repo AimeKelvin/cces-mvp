@@ -1,4 +1,4 @@
-# 📣 Citizen Engagement System Backend (MVP)
+# 📣 Citizen Engagement System Backend MVP
 
 A full-stack-ready backend API that enables citizens to submit public complaints, automatically routes them to relevant government agencies using keyword-based classifier algorithm, and allows government officials to register, manage, and respond to them.
 
